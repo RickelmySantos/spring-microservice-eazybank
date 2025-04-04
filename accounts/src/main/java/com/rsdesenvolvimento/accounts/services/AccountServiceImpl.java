@@ -8,6 +8,7 @@ import com.rsdesenvolvimento.accounts.exception.CustomerAlreadyExistsException;
 import com.rsdesenvolvimento.accounts.mappers.CustomerMapper;
 import com.rsdesenvolvimento.accounts.repositorios.AccountsRepository;
 import com.rsdesenvolvimento.accounts.repositorios.CustomerRepository;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,8 @@ public class AccountServiceImpl implements AccountsService {
       throw new CustomerAlreadyExistsException(
           "Customer already exists with this mobile number" + customerDto.getMobileNumber());
     }
+    customer.setCreatedAt(LocalDateTime.now());
+    customer.setCreatedBy("anonymous");
 
     Customer savedCustomer = this.customerRepository.save(customer);
     this.accountsRepository.save(this.createAccount(savedCustomer));
@@ -51,6 +54,8 @@ public class AccountServiceImpl implements AccountsService {
     account.setAccountNumber(randomNumber);
     account.setAccountType(AccountsConstants.SAVINGS);
     account.setBranchAddress(AccountsConstants.ADDRESS);
+    account.setCreatedAt(LocalDateTime.now());
+    account.setCreatedBy("anonymous");
 
     return account;
   }
