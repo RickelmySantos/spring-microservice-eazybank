@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AccountsDto {
 
-  private Long accontNumber;
+  private Long accountNumber;
   private String accountType;
   private String branchAddress;
 }

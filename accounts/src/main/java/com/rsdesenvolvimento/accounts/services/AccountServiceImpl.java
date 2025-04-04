@@ -5,6 +5,8 @@ import com.rsdesenvolvimento.accounts.dto.CustomerDto;
 import com.rsdesenvolvimento.accounts.entidades.Accounts;
 import com.rsdesenvolvimento.accounts.entidades.Customer;
 import com.rsdesenvolvimento.accounts.exception.CustomerAlreadyExistsException;
+import com.rsdesenvolvimento.accounts.exception.ResourceNotFoundException;
+import com.rsdesenvolvimento.accounts.mappers.AccountsMapper;
 import com.rsdesenvolvimento.accounts.mappers.CustomerMapper;
 import com.rsdesenvolvimento.accounts.repositorios.AccountsRepository;
 import com.rsdesenvolvimento.accounts.repositorios.CustomerRepository;
@@ -19,12 +21,15 @@ public class AccountServiceImpl implements AccountsService {
   private final AccountsRepository accountsRepository;
   private final CustomerRepository customerRepository;
   private final CustomerMapper customerMapper;
+  private final AccountsMapper accountsMapper;
 
   public AccountServiceImpl(AccountsRepository accountsRepository,
-      CustomerRepository customerRepository, CustomerMapper customerMapper) {
+      CustomerRepository customerRepository, CustomerMapper customerMapper,
+      AccountsMapper accountsMapper) {
     this.accountsRepository = accountsRepository;
     this.customerRepository = customerRepository;
     this.customerMapper = customerMapper;
+    this.accountsMapper = accountsMapper;
   }
 
   @Override
@@ -45,6 +50,23 @@ public class AccountServiceImpl implements AccountsService {
     Customer savedCustomer = this.customerRepository.save(customer);
     this.accountsRepository.save(this.createAccount(savedCustomer));
   }
+
+  @Override
+  public CustomerDto getAccountByMobileNumber(String mobileNumber) {
+
+    Customer customer = this.customerRepository.findByMobileNumber(mobileNumber)
+        .orElseThrow(() -> new ResourceNotFoundException(
+            "Customer not found with this mobile number" + mobileNumber));
+    Accounts account = this.accountsRepository.findByCustomerId(customer.getCustomerId())
+        .orElseThrow(() -> new ResourceNotFoundException(
+            "Account not found with this customer id" + customer.getCustomerId()));
+    CustomerDto customerDto = this.customerMapper.paraDto(customer);
+    customerDto.setAccountsDto(this.accountsMapper.paraDto(account));
+    // System.out.println("Account Number: " + account.getAccountNumber());
+    return customerDto;
+
+  }
+
 
 
   private Accounts createAccount(Customer customer) {
