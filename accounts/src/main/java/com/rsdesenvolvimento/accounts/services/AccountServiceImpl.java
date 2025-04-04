@@ -11,7 +11,6 @@ import com.rsdesenvolvimento.accounts.mappers.AccountsMapper;
 import com.rsdesenvolvimento.accounts.mappers.CustomerMapper;
 import com.rsdesenvolvimento.accounts.repositorios.AccountsRepository;
 import com.rsdesenvolvimento.accounts.repositorios.CustomerRepository;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import org.springframework.stereotype.Service;
@@ -45,9 +44,6 @@ public class AccountServiceImpl implements AccountsService {
       throw new CustomerAlreadyExistsException(
           "Customer already exists with this mobile number" + customerDto.getMobileNumber());
     }
-    customer.setCreatedAt(LocalDateTime.now());
-    customer.setCreatedBy("anonymous");
-
     Customer savedCustomer = this.customerRepository.save(customer);
     this.accountsRepository.save(this.createAccount(savedCustomer));
   }
@@ -77,9 +73,6 @@ public class AccountServiceImpl implements AccountsService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 "Customer not found with this mobile number: " + customerDto.getMobileNumber()));
     this.customerMapper.atualizarEntidade(customerDto, existingCustomer);
-    existingCustomer.setUpdateAt(LocalDateTime.now());
-    existingCustomer.setUpdateBy("anonymous");
-
     this.customerRepository.save(existingCustomer);
 
     AccountsDto accountsDto = customerDto.getAccountsDto();
@@ -89,8 +82,6 @@ public class AccountServiceImpl implements AccountsService {
               "Account not found with this account number" + accountsDto.getAccountNumber()));
       existingAccounts.setAccountType(accountsDto.getAccountType());
       existingAccounts.setBranchAddress(accountsDto.getBranchAddress());
-      existingAccounts.setUpdateAt(LocalDateTime.now());
-      existingAccounts.setUpdateBy("anonymous");
 
       this.accountsRepository.save(existingAccounts);
       isUpdated = true;
@@ -117,8 +108,6 @@ public class AccountServiceImpl implements AccountsService {
     account.setAccountNumber(randomNumber);
     account.setAccountType(AccountsConstants.SAVINGS);
     account.setBranchAddress(AccountsConstants.ADDRESS);
-    account.setCreatedAt(LocalDateTime.now());
-    account.setCreatedBy("anonymous");
 
     return account;
   }
