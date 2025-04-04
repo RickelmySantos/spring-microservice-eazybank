@@ -99,6 +99,17 @@ public class AccountServiceImpl implements AccountsService {
 
   }
 
+  @Override
+  public void deleteAccount(String mobileNumber) {
+    Customer customer = this.customerRepository.findByMobileNumber(mobileNumber)
+        .orElseThrow(() -> new ResourceNotFoundException(
+            "Customer not found with this mobile number: " + mobileNumber));
+    this.accountsRepository.deleteByCustomerId(customer.getCustomerId());
+    this.customerRepository.deleteById(customer.getCustomerId());
+  }
+
+
+
   private Accounts createAccount(Customer customer) {
     Accounts account = new Accounts();
     account.setCustomerId(customer.getCustomerId());

@@ -6,6 +6,7 @@ import com.rsdesenvolvimento.accounts.dto.ResponseDto;
 import com.rsdesenvolvimento.accounts.services.AccountServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,4 +52,10 @@ public class AccountsController {
     }
   }
 
+  @DeleteMapping("/delete")
+  public ResponseEntity<ResponseDto> deleteAccountClient(@RequestParam String mobileNumber) {
+    this.accountService.deleteAccount(mobileNumber);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+  }
 }

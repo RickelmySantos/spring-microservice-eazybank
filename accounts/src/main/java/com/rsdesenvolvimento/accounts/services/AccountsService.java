@@ -8,4 +8,7 @@ public interface AccountsService {
   CustomerDto getAccountByMobileNumber(String mobileNumber);
 
   boolean updateAccount(CustomerDto customerDto);
+
+
+  void deleteAccount(String mobileNumber);
 }
