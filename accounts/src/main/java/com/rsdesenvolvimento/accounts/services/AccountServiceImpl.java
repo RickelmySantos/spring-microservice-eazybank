@@ -1,6 +1,7 @@
 package com.rsdesenvolvimento.accounts.services;
 
 import com.rsdesenvolvimento.accounts.constants.AccountsConstants;
+import com.rsdesenvolvimento.accounts.dto.AccountsDto;
 import com.rsdesenvolvimento.accounts.dto.CustomerDto;
 import com.rsdesenvolvimento.accounts.entidades.Accounts;
 import com.rsdesenvolvimento.accounts.entidades.Customer;
@@ -67,7 +68,36 @@ public class AccountServiceImpl implements AccountsService {
 
   }
 
+  @Override
+  public boolean updateAccount(CustomerDto customerDto) {
+    boolean isUpdated = false;
 
+    Customer existingCustomer =
+        this.customerRepository.findByMobileNumber(customerDto.getMobileNumber())
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "Customer not found with this mobile number: " + customerDto.getMobileNumber()));
+    this.customerMapper.atualizarEntidade(customerDto, existingCustomer);
+    existingCustomer.setUpdateAt(LocalDateTime.now());
+    existingCustomer.setUpdateBy("anonymous");
+
+    this.customerRepository.save(existingCustomer);
+
+    AccountsDto accountsDto = customerDto.getAccountsDto();
+    if (accountsDto != null) {
+      Accounts existingAccounts = this.accountsRepository.findById(accountsDto.getAccountNumber())
+          .orElseThrow(() -> new ResourceNotFoundException(
+              "Account not found with this account number" + accountsDto.getAccountNumber()));
+      existingAccounts.setAccountType(accountsDto.getAccountType());
+      existingAccounts.setBranchAddress(accountsDto.getBranchAddress());
+      existingAccounts.setUpdateAt(LocalDateTime.now());
+      existingAccounts.setUpdateBy("anonymous");
+
+      this.accountsRepository.save(existingAccounts);
+      isUpdated = true;
+    }
+    return isUpdated;
+
+  }
 
   private Accounts createAccount(Customer customer) {
     Accounts account = new Accounts();
@@ -81,5 +111,7 @@ public class AccountServiceImpl implements AccountsService {
 
     return account;
   }
+
+
 
 }
