@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
+public class ErrorResponseDto {
 
   private String apiPath;
   private HttpStatus erroCode;
