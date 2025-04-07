@@ -26,5 +26,5 @@ public class Loans extends EntidadeBase {
 
   private int amountPaid;
 
-  private int outstatindgAmount;
+  private int outstandingAmount;
 }

@@ -13,4 +13,6 @@ public interface LoansMapper {
   Loans paraEntidade(LoansDto loansDto);
 
   Loans mapToEntity(LoansDto loansDto, @MappingTarget Loans loans);
+
+
 }
