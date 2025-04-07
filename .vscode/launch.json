@@ -9,6 +9,16 @@
       "projectName": "accounts",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-CardsApplication<cards>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.cards.CardsApplication",
+      "projectName": "cards",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
