@@ -19,6 +19,16 @@
       "projectName": "cards",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-LoansApplication<loans>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.loans.LoansApplication",
+      "projectName": "loans",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }

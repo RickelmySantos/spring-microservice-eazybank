@@ -22,12 +22,15 @@ public class EntidadeBase {
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdAt;
+
   @CreatedBy
   @Column(updatable = false)
   private String createdBy;
+
   @LastModifiedDate
   @Column(insertable = false)
   private LocalDateTime updateAt;
+
   @LastModifiedDate
   @Column(insertable = false)
   private String updateBy;

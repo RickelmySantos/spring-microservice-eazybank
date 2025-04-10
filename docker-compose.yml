@@ -1,0 +1,36 @@
+services:
+  accounts:
+    build:
+      context: ./accounts
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+    networks:
+      - rsdesenvolvimento
+
+  cards:
+    build:
+      context: ./cards
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+    networks:
+      - rsdesenvolvimento
+
+  loans:
+    build:
+      context: ./loans
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+    networks:
+      - rsdesenvolvimento
+networks:
+  rsdesenvolvimento:
+    driver: bridge
