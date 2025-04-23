@@ -32,8 +32,3 @@ accounts:
   onCallSupport:
     - (99) 99999-9999
 
----
-spring:
-  config:
-    activate:
-      on-profile: "dev"
