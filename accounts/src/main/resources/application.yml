@@ -5,8 +5,6 @@ server:
 spring:
   application:
     name: accounts
-  profiles:
-    active: dev
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -48,4 +46,30 @@ management:
 spring:
   config:
     activate:
-      on-profile: "dev"
+      on-profile: prod
+build:
+  version: "1.0"
+
+accounts:
+  message: "Bem vindos ao EazyBank accounts prod APIs "
+  contactDetails:
+    name: "RSDensenvolvimento"
+    email: "rsdesenvolvimento@gmail.com"
+  onCallSupport:
+    - (999) 9999-9999
+
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+build:
+  version: "2.0"
+
+accounts:
+  message: "Bem vindos ao EazyBank accounts qa APIs "
+  contactDetails:
+    name: "RSDensenvolvimento"
+    email: "rsdesenvolvimento@gmail.com"
+  onCallSupport:
+    - (999) 9999-9999

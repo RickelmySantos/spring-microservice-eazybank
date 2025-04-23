@@ -2,9 +2,12 @@ package com.rsdesenvolvimento.loans.controladores;
 
 import com.rsdesenvolvimento.loans.core.constants.LoansConstants;
 import com.rsdesenvolvimento.loans.core.modelos.dto.ResponseDto;
+import com.rsdesenvolvimento.loans.modelos.dtos.LoansContactInfoDto;
 import com.rsdesenvolvimento.loans.modelos.dtos.LoansDto;
 import com.rsdesenvolvimento.loans.services.LoansService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/loans")
+@RequiredArgsConstructor
 public class LoansController {
 
   private final LoansService service;
+  private final LoansContactInfoDto loansContactInfoDto;
 
-  public LoansController(LoansService service) {
-    this.service = service;
-  }
+  @Value("${build.version}")
+  private String buildVersion;
+
 
   @PostMapping
   public ResponseEntity<ResponseDto> createLoans(@Valid @RequestParam String mobileNumber) {
@@ -51,4 +56,15 @@ public class LoansController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
   }
+
+  @GetMapping("/build-info")
+  public ResponseEntity<String> getBuildInfo() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
+  }
+
+  @GetMapping("/contact-info")
+  public ResponseEntity<LoansContactInfoDto> getContactInfo() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.loansContactInfoDto);
+  }
+
 }

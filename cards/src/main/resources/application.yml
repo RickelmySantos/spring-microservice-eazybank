@@ -5,8 +5,6 @@ server:
 spring:
   application:
     name: cards
-  profiles:
-    active: dev
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -32,3 +30,33 @@ management:
     web:
       exposure:
         include: "*"
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+build:
+  version: "1.0"
+
+accounts:
+  message: "Bem vindos ao EazyBank cards prod APIs "
+  contactDetails:
+    name: "RSDensenvolvimento"
+    email: "rsdesenvolvimento@gmail.com"
+  onCallSupport:
+    - (999) 9999-9999
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+build:
+  version: "2.0"
+
+accounts:
+  message: "Bem vindos ao EazyBank cards qa APIs "
+  contactDetails:
+    name: "RSDensenvolvimento"
+    email: "rsdesenvolvimento@gmail.com"
+  onCallSupport:
+    - (999) 9999-9999

@@ -1,9 +1,12 @@
 package com.rsdesenvolvimento.accounts.controladores;
 
 import com.rsdesenvolvimento.accounts.constants.AccountsConstants;
+import com.rsdesenvolvimento.accounts.dto.AccountsContactInfoDto;
 import com.rsdesenvolvimento.accounts.dto.CustomerDto;
 import com.rsdesenvolvimento.accounts.dto.ResponseDto;
 import com.rsdesenvolvimento.accounts.services.AccountServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,13 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/accounts")
+@RequiredArgsConstructor
 public class AccountsController {
 
   private final AccountServiceImpl accountService;
+  private final AccountsContactInfoDto accountsContactInfoDto;
 
-  public AccountsController(AccountServiceImpl accountService) {
-    this.accountService = accountService;
-  }
+  @Value("${build.version}")
+  private String buildVersion;
+
 
 
   @PostMapping()
@@ -57,5 +62,15 @@ public class AccountsController {
     this.accountService.deleteAccount(mobileNumber);
     return ResponseEntity.status(HttpStatus.OK)
         .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+  }
+
+  @GetMapping("/build-info")
+  public ResponseEntity<String> buscarInformacaoes() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
+  }
+
+  @GetMapping("/contact-info")
+  public ResponseEntity<AccountsContactInfoDto> contactInfo() {
+    return ResponseEntity.status(HttpStatus.OK).body(this.accountsContactInfoDto);
   }
 }
