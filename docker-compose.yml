@@ -1,4 +1,15 @@
 services:
+  rabbitmq:
+    image: rabbitmq:4.1-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - rsdesenvolvimento
+
   accounts:
     build:
       context: ./accounts
