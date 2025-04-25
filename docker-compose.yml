@@ -1,4 +1,22 @@
 services:
+  postgres-local:
+    image: postgres:latest
+    container_name: postgres-local
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: "pg_isready --username=postgres && psql --username=postgres --list"
+      timeout: 10s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra:/docker-entrypoint-initdb.d
+    networks:
+      - rsdesenvolvimento
   rabbitmq:
     image: rabbitmq:4.1-management
     ports:
@@ -14,10 +32,19 @@ services:
     build:
       context: ./accounts
       dockerfile: Dockerfile
+    # profiles:
+    #   - "app"
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/accounts
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+    depends_on:
+      postgres-local:
+        condition: service_healthy
     networks:
       - rsdesenvolvimento
 
@@ -25,10 +52,19 @@ services:
     build:
       context: ./cards
       dockerfile: Dockerfile
+    # profiles:
+    #   - "app"
     ports:
       - "9000:9000"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/cards
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+    depends_on:
+      postgres-local:
+        condition: service_healthy
     networks:
       - rsdesenvolvimento
 
@@ -36,12 +72,22 @@ services:
     build:
       context: ./loans
       dockerfile: Dockerfile
+    # profiles:
+    #   - "app"
     ports:
       - "8090:8090"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-local:5432/loans
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+    depends_on:
+      postgres-local:
+        condition: service_healthy
     networks:
       - rsdesenvolvimento
 networks:
   rsdesenvolvimento:
     driver: bridge
+volumes:
+  postgres_data:

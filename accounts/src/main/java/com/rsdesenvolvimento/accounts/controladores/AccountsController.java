@@ -5,6 +5,7 @@ import com.rsdesenvolvimento.accounts.dto.AccountsContactInfoDto;
 import com.rsdesenvolvimento.accounts.dto.CustomerDto;
 import com.rsdesenvolvimento.accounts.dto.ResponseDto;
 import com.rsdesenvolvimento.accounts.services.AccountServiceImpl;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,10 @@ public class AccountsController {
   @Value("${build.version}")
   private String buildVersion;
 
+  @PostConstruct
+  public void init() {
+    System.out.println("AccountsController iniciado com configs: " + this.accountsContactInfoDto);
+  }
 
 
   @PostMapping()
