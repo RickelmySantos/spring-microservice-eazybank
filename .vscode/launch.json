@@ -5,7 +5,8 @@
       "name": "EurekaserverApplication",
       "request": "launch",
       "mainClass": "com.rsdesenvolvimento.eurekaserver.EurekaserverApplication",
-      "projectName": "eurekaserver"
+      "projectName": "eurekaserver",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=44497 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eurekaserver"
     },
     {
       "type": "java",
@@ -41,6 +42,16 @@
       "cwd": "${workspaceFolder}",
       "mainClass": "com.rsdesenvolvimento.loans.LoansApplication",
       "projectName": "loans",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ConfigserverApplication<configserver>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rsdesenvolvimento.configserver.ConfigserverApplication",
+      "projectName": "configserver",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
     }

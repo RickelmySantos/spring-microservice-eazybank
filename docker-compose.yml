@@ -17,16 +17,62 @@ services:
       - ./infra:/docker-entrypoint-initdb.d
     networks:
       - rsdesenvolvimento
-  rabbitmq:
-    image: rabbitmq:4.1-management
+  # rabbitmq:
+  #   image: rabbitmq:4.1-management
+  #   ports:
+  #     - "15672:15672"
+  #     - "5672:5672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin
+  #   networks:
+  #     - rsdesenvolvimento
+
+  eureka:
+    build:
+      context: ./eurekaserver
+      dockerfile: Dockerfile
+    container_name: eureka-server
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "8761:8761"
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      SPRING_PROFILES_ACTIVE: default
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/api/eureka/
+      EUREKA_INSTANCE_IP_ADDRESS: localhost
     networks:
       - rsdesenvolvimento
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/api/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+  configserver:
+    build:
+      context: ./configserver
+      dockerfile: Dockerfile
+    ports:
+      - "8071:8071"
+    environment:
+      SPRING_PROFILES_ACTIVE: git
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/RickelmySantos/spring-microservice-eazybank.git
+      SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: config
+      SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULTLABEL: feature-spring-cloud
+      SPRING_CLOUD_CONFIG_SERVER_GIT_TIMEOUT: 5
+      SPRING_CLOUD_CONFIG_SERVER_GIT_CLONEONSTART: "true"
+      SPRING_CLOUD_CONFIG_SERVER_GIT_FORCEPULL: "true"
+    networks:
+      - rsdesenvolvimento
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/api/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
   accounts:
     build:
@@ -43,6 +89,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
     depends_on:
+      configserver:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
       postgres-local:
         condition: service_healthy
     networks:
@@ -63,6 +113,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
     depends_on:
+      configserver:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
       postgres-local:
         condition: service_healthy
     networks:
@@ -82,6 +136,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
     depends_on:
+      configserver:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
       postgres-local:
         condition: service_healthy
     networks:

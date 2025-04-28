@@ -1,11 +1,12 @@
 server:
+  port: 8070
   servlet:
     context-path: /api
 spring:
   application:
     name: eurekaserver
   config:
-    import: "optional:configserver:http://localhost:8871/"
+    import: "optional:configserver:http://localhost:8071/api"
 management:
   endpoints:
     web:
@@ -14,9 +15,9 @@ management:
   health:
     readiness-state:
       enabled: true
-    livenessstate:
+    liveness-state:
       enabled: true
-    enpoint:
+    endpoint:
       health:
         probes:
           enabled: true

@@ -22,12 +22,21 @@ spring:
         drop-target: target/drop.sql
 
   config:
-    import: "optional:configserver:http://localhost:8871/"
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    import: "optional:configserver:http://localhost:8071/"
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/api/eureka/
+  # rabbitmq:
+  #   host: localhost
+  #   port: 5672
+  #   username: guest
+  #   password: guest
 management:
   endpoints:
     web:
