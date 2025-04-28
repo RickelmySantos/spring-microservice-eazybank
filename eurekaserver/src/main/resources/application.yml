@@ -1,0 +1,22 @@
+server:
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: eurekaserver
+  config:
+    import: "optional:configserver:http://localhost:8871/"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    livenessstate:
+      enabled: true
+    enpoint:
+      health:
+        probes:
+          enabled: true
