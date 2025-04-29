@@ -43,11 +43,11 @@ services:
     networks:
       - rsdesenvolvimento
     healthcheck:
-      test: "curl --fail --silent localhost:8761/api/actuator/health/readiness | grep UP || exit 1"
+      test: "curl --fail --silent localhost:8761/api/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 30s
+      retries: 20
+      start_period: 60s
     depends_on:
       configserver:
         condition: service_healthy
@@ -91,6 +91,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       configserver:
         condition: service_healthy
@@ -116,6 +117,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       configserver:
         condition: service_healthy
@@ -140,6 +142,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
     depends_on:
       configserver:
         condition: service_healthy
