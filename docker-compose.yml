@@ -32,17 +32,18 @@ services:
     build:
       context: ./eurekaserver
       dockerfile: Dockerfile
-    container_name: eureka-server
+    container_name: eurekaserver
     ports:
       - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/api/eureka/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8761/api/eureka/
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
       EUREKA_INSTANCE_IP_ADDRESS: localhost
     networks:
       - rsdesenvolvimento
     healthcheck:
-      test: "curl --fail --silent localhost:8070/api/actuator/health/readiness | grep UP || exit 1"
+      test: "curl --fail --silent localhost:8761/api/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 10
@@ -65,6 +66,7 @@ services:
       SPRING_CLOUD_CONFIG_SERVER_GIT_TIMEOUT: 5
       SPRING_CLOUD_CONFIG_SERVER_GIT_CLONEONSTART: "true"
       SPRING_CLOUD_CONFIG_SERVER_GIT_FORCEPULL: "true"
+
     networks:
       - rsdesenvolvimento
     healthcheck:
@@ -88,6 +90,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
     depends_on:
       configserver:
         condition: service_healthy
@@ -112,6 +115,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
     depends_on:
       configserver:
         condition: service_healthy
@@ -135,6 +139,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/api
     depends_on:
       configserver:
         condition: service_healthy

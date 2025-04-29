@@ -19,7 +19,7 @@ spring:
       ddl-auto: update
     show-sql: true
   config:
-    import: "optional:configserver:http://localhost:8871/"
+    import: "optional:configserver:http://localhost:8071/"
 
 build:
   version: 1.0
@@ -30,5 +30,4 @@ accounts:
     name: "RSDesenvolvimento"
     email: "rsdesenvolvimento@gmail.com"
   onCallSupport:
-    - (99) 99999-9999
-
+  - (99) 99999-9999

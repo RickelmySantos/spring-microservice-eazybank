@@ -1,12 +1,20 @@
 server:
-  port: 8070
+  port: 8761
   servlet:
     context-path: /api
 spring:
   application:
     name: eurekaserver
   config:
-    import: "optional:configserver:http://localhost:8071/api"
+    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/api/eureka/}
+
 management:
   endpoints:
     web:

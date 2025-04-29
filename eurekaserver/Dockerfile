@@ -25,6 +25,6 @@ RUN apt-get update && apt-get install -y curl
 
 COPY --from=builder /app/target/eurekaserver-0.0.1-SNAPSHOT.jar /eurekaserver.jar
 
-EXPOSE 8070
+EXPOSE 8761
 
 ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-jar", "/eurekaserver.jar"]
