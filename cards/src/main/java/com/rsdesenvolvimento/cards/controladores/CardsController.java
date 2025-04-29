@@ -39,7 +39,7 @@ public class CardsController {
         .body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));
   }
 
-  @GetMapping()
+  @GetMapping("/fetch")
   public ResponseEntity<CardsDto> fetchCardsDetails(@RequestParam String mobileNumber) {
     CardsDto cardsDto = this.service.fetchCard(mobileNumber);
     return ResponseEntity.status(HttpStatus.OK).body(cardsDto);

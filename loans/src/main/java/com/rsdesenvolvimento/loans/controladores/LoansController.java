@@ -37,7 +37,7 @@ public class LoansController {
         .body(new ResponseDto(LoansConstants.STATUS_201, LoansConstants.MESSAGE_201));
   }
 
-  @GetMapping
+  @GetMapping("/fetch")
   public ResponseEntity<LoansDto> fetchLoansDetails(@RequestParam String mobileNumber) {
     LoansDto loansDto = this.service.fetchLoandDetails(mobileNumber);
     return ResponseEntity.status(HttpStatus.OK).body(loansDto);
