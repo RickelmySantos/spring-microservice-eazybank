@@ -90,6 +90,21 @@ services:
       - cards
       - loans
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - rsdesenvolvimento
+
   accounts:
     build:
       context: ./accounts
@@ -171,3 +186,4 @@ networks:
     driver: bridge
 volumes:
   postgres_data:
+  grafana_data:
