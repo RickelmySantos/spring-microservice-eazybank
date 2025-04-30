@@ -47,6 +47,14 @@ management:
     web:
       exposure:
         include: "*"
+info:
+  app:
+    name: "Accounts Service"
+    description: "Gerencia contas de clientes"
+    version: "1.0.0"
+  developer:
+    name: "RSDesenvolvimento"
+    email: "rsdesenvolvimento@gmail.com"
 ---
 spring:
   config:
