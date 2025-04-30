@@ -5,83 +5,9 @@ server:
 spring:
   application:
     name: cards
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME}
-  jpa:
-    show-sql: true
-  sql:
-    init:
-      mode: never
-  hibernate:
-    format_sql: false
-    jakarta.persistence.schema-generation.scripts:
-      action: drop-and-create
-      create-source: metadata
-      create-target: target/create.sql
-      drop-source: metadata
-      drop-target: target/drop.sql
   config:
     import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
 eureka:
-  instance:
-    prefer-ip-address: true
   client:
-    fetch-registry: true
-    register-with-eureka: true
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/api/eureka/}
-
-  # rabbitmq:
-  #   host: localhost
-  #   port: 5672
-  #   username: guest
-  #   password: guest
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-build:
-  version: "1.0"
-
-cards:
-  message: "Bem vindos ao EazyBank cards prod APIs "
-  contactDetails:
-    name: "RSDensenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (999) 9999-9999
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-build:
-  version: "1.0"
-
-cards:
-  message: "Bem vindos ao EazyBank cards prod APIs "
-  contactDetails:
-    name: "RSDensenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (999) 9999-9999
----
-spring:
-  config:
-    activate:
-      on-profile: qa
-build:
-  version: "2.0"
-
-cards:
-  message: "Bem vindos ao EazyBank cards qa APIs "
-  contactDetails:
-    name: "RSDensenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (999) 9999-9999
+      defaultZone: http://localhost:8761/api/eureka/

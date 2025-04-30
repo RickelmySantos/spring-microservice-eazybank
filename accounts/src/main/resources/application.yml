@@ -2,88 +2,20 @@ server:
   port: 8080
   servlet:
     context-path: /api
+
 spring:
   application:
     name: accounts
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/accounts}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:org.postgresql.Driver}
-  jpa:
-    show-sql: true
-  sql:
-    init:
-      mode: never
-  hibernate:
-    ddl-auto: update
-    format_sql: false
-    jakarta.persistence.schema-generation.scripts:
-      action: drop-and-create
-      create-source: metadata
-      create-target: target/create.sql
-      drop-source: metadata
-      drop-target: target/drop.sql
   config:
-    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/api}
-  # rabbitmq:
-  #   host: localhost
-  #   port: 5672
-  #   username: guest
-  #   password: guest
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8071/api/}
+  # profiles:
+  #   active: dev
+
 eureka:
   instance:
     prefer-ip-address: true
   client:
     fetch-registry: true
     register-with-eureka: true
-    service-url:
+    serviceUrl:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/api/eureka/}
-
-build:
-  version: 1.0
-
-accounts:
-  message: "Bem-vindo ao microserviço de contas"
-  contactDetails:
-    name: "RSDesenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (99) 99999-9999
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-build:
-  version: "1.0"
-
-accounts:
-  message: "Bem vindos ao EazyBank accounts prod APIs "
-  contactDetails:
-    name: "RSDensenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (999) 9999-9999
-
----
-spring:
-  config:
-    activate:
-      on-profile: qa
-build:
-  version: "2.0"
-
-accounts:
-  message: "Bem vindos ao EazyBank accounts qa APIs "
-  contactDetails:
-    name: "RSDensenvolvimento"
-    email: "rsdesenvolvimento@gmail.com"
-  onCallSupport:
-    - (999) 9999-9999

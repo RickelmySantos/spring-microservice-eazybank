@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build módulo Maven",
+      "type": "shell",
+      "command": "mvn clean install -DskipTests",
+      "options": {
+        "cwd": "${workspaceFolder}/${input:modulo}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "modulo",
+      "type": "promptString",
+      "description": "Digite o nome do módulo (ex: accounts)"
+    }
+  ]
+}
