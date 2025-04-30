@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 public class Customer extends EntidadeBase {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "customer_id")
   private Long customerId;
   private String name;
