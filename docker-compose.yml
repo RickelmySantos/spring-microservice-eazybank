@@ -76,12 +76,26 @@ services:
       retries: 10
       start_period: 10s
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - rsdesenvolvimento
+    depends_on:
+      - accounts
+      - cards
+      - loans
+
   accounts:
     build:
       context: ./accounts
       dockerfile: Dockerfile
-    profiles:
-      - "app"
+    # profiles:
+    #   - "app"
     ports:
       - "8080:8080"
     environment:
@@ -106,8 +120,8 @@ services:
     build:
       context: ./cards
       dockerfile: Dockerfile
-    profiles:
-      - "app"
+    # profiles:
+    #   - "app"
     ports:
       - "9000:9000"
     environment:
@@ -132,8 +146,8 @@ services:
     build:
       context: ./loans
       dockerfile: Dockerfile
-    profiles:
-      - "app"
+    # profiles:
+    #   - "app"
     ports:
       - "8090:8090"
     environment:
